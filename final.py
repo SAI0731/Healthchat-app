@@ -1,7 +1,7 @@
 import streamlit as st
 st.set_page_config(page_title="Healthchat Assistant", page_icon="🩺", layout="centered")   
 import pandas as pd
-from transformers import pipeline
+
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import TreebankWordTokenizer
@@ -35,18 +35,6 @@ def extract_all_symptoms():
     return all_symptoms
 
 known_symptoms = extract_all_symptoms()
-@st.cache_resource
-def load_qa_model():
-    try:
-        return pipeline(
-            task="question-answering",
-            model="distilbert-base-uncased-distilled-squad"
-        )
-    except Exception as e:
-        st.error(f"QA Model Loading Error: {e}")
-        return None
-
-qa_model = load_qa_model()
 
 pdf_context = ""
 
@@ -90,6 +78,7 @@ def predict_disease(user_symptoms):
 def healthcare_chatbot(user_input, context):
     tokens = preprocess_input(user_input)
     result = predict_disease(tokens)
+
     if result is not None:
         return (
             f"<div class='response'>"
@@ -97,15 +86,14 @@ def healthcare_chatbot(user_input, context):
             f"<p><b>Description:</b> {result['Description']}</p>"
             f"<p><b>Prevention:</b> {result['Prevention']}</p>"
             f"<p style='color:#555;'>💡 Consult a doctor for professional diagnosis.</p>"
-            f"</div>", result
+            f"</div>",
+            result
         )
-    else:
-        try:
-            answer = qa_model(question=user_input, context=context)["answer"]
-            return f"<p class='response'>🧠 <b>Medical Info:</b> {answer}</p>", None
-        except Exception:
-            return "<p style='color:red;'>⚠️ Sorry, I'm unable to process that right now.</p>", None
 
+    return (
+        "<p class='response'>⚠️ No matching disease found. Please enter more symptoms.</p>",
+        None
+    )
 def generate_pdf_report(symptoms, severity, diagnosis):
     pdf = FPDF()
     pdf.add_page()
