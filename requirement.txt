@@ -1,0 +1,9 @@
+streamlit
+transformers
+tensorflow
+nltk
+tf-keras
+pandas
+difflib
+fpdf
+PyPDF2
