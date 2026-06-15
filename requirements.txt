@@ -1,7 +1,5 @@
 streamlit
 pandas
-transformers
-torch
 nltk
 SpeechRecognition
 fpdf
