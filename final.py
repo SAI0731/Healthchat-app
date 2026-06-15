@@ -36,7 +36,14 @@ def extract_all_symptoms():
     return all_symptoms
 
 known_symptoms = extract_all_symptoms()
-qa_model = pipeline("question-answering", model="distilbert-base-uncased-distilled-squad")
+@st.cache_resource
+def load_qa_model():
+    return pipeline(
+        "question-answering",
+        model="distilbert-base-uncased-distilled-squad"
+    )
+
+qa_model = load_qa_model()
 
 pdf_context = ""
 
