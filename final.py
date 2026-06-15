@@ -67,11 +67,10 @@ def autocorrect_symptoms(tokens):
 def preprocess_input(text):
     tokens = tokenizer.tokenize(text.lower())
     STOP_WORDS = set(stopwords.words("english"))
-
-tokens = [
-    word for word in tokens
-    if word not in STOP_WORDS and word not in string.punctuation
-]
+    tokens = [
+        word for word in tokens
+        if word not in STOP_WORDS and word not in string.punctuation
+    ]
     return autocorrect_symptoms(tokens)
 
 def predict_disease(user_symptoms):
