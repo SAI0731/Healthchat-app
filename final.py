@@ -37,10 +37,14 @@ def extract_all_symptoms():
 known_symptoms = extract_all_symptoms()
 @st.cache_resource
 def load_qa_model():
-    return pipeline(
-        "question-answering",
-        model="distilbert-base-uncased-distilled-squad"
-    )
+    try:
+        return pipeline(
+            task="question-answering",
+            model="distilbert-base-uncased-distilled-squad"
+        )
+    except Exception as e:
+        st.error(f"QA Model Loading Error: {e}")
+        return None
 
 qa_model = load_qa_model()
 
