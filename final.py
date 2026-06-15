@@ -1,11 +1,5 @@
 import streamlit as st
-st.set_page_config(page_title="Healthchat Assistant", page_icon="🩺", layout="centered")
-try:
-    import transformers
-    st.success(f"Transformers Version: {transformers.__version__}")
-except Exception as e:
-    st.error(f"Transformers Error: {e}")
-    
+st.set_page_config(page_title="Healthchat Assistant", page_icon="🩺", layout="centered")   
 import pandas as pd
 from transformers import pipeline
 import nltk
